@@ -1,0 +1,131 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║           🚀 SAMARTHDESK AI - QUICK START GUIDE              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────┐
+│  YOUR SYSTEM STATUS                                          │
+├──────────────────────────────────────────────────────────────┤
+│  ✅ Node.js v22.17.1    (INSTALLED)                          │
+│  ✅ npm 10.9.2          (INSTALLED)                          │
+│  ✅ Project Files       (90+ FILES READY)                    │
+│  ✅ Code                (10,000+ LINES READY)                │
+│  ❌ PostgreSQL          (NOT INSTALLED - NEED THIS!)         │
+└──────────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════╗
+║  STEP 1: INSTALL POSTGRESQL (10 minutes)                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+  1. Open browser
+  2. Go to: https://www.postgresql.org/download/windows/
+  3. Download: postgresql-15.x-windows-x64.exe
+  4. Run installer
+  5. Set password: samarthdesk_password
+  6. Keep port: 5432
+  7. Click Next → Next → Install
+  8. Done! PostgreSQL will run automatically
+
+╔══════════════════════════════════════════════════════════════╗
+║  STEP 2: RUN SETUP SCRIPT (5 minutes)                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+  Open PowerShell in this folder and run:
+
+  .\quick-start.ps1
+
+  This will:
+  ✅ Install all dependencies
+  ✅ Setup database
+  ✅ Create tables
+  ✅ Add test users
+
+╔══════════════════════════════════════════════════════════════╗
+║  STEP 3: START APPLICATION (2 minutes)                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+  Terminal 1 (Backend):
+  ─────────────────────
+  cd backend
+  npm run dev
+
+  Wait for: "🚀 Server running on port 5000"
+
+
+  Terminal 2 (Frontend):
+  ──────────────────────
+  cd frontend
+  npm run dev
+
+  Wait for: "Local: http://localhost:5173"
+
+
+  Browser:
+  ────────
+  Open: http://localhost:5173
+
+╔══════════════════════════════════════════════════════════════╗
+║  🔐 TEST ACCOUNTS                                            ║
+╚══════════════════════════════════════════════════════════════╝
+
+  Admin:
+  ──────
+  Email:    admin@samarthdesk.com
+  Password: Admin@123
+
+  Agent:
+  ──────
+  Email:    agent@samarthdesk.com
+  Password: Agent@123
+
+  Customer:
+  ─────────
+  Email:    customer@example.com
+  Password: Customer@123
+
+┌──────────────────────────────────────────────────────────────┐
+│  ✅ THAT'S IT! Total time: ~17 minutes                       │
+└──────────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════╗
+║  🆘 NEED HELP?                                               ║
+╚══════════════════════════════════════════════════════════════╝
+
+  📄 START_HERE.md          - Simplest guide
+  📄 INSTALL_GUIDE.md       - Detailed steps
+  📄 RUN_NOW.md             - Alternative instructions
+  📄 CURRENT_STATUS.md      - What's built
+  📄 PROJECT_COMPLETE.md    - Feature overview
+
+╔══════════════════════════════════════════════════════════════╗
+║  🎯 WHAT TO DO FIRST                                         ║
+╚══════════════════════════════════════════════════════════════╝
+
+  1. Login as Customer
+     → Create a support ticket
+     → View your tickets
+
+  2. Login as Agent
+     → View all tickets
+     → Assign ticket to yourself
+     → Change ticket status
+
+  3. Login as Admin
+     → Open Admin Panel
+     → View User Management
+     → Create new user
+     → View statistics
+
+╔══════════════════════════════════════════════════════════════╗
+║  🚀 READY TO START?                                          ║
+╚══════════════════════════════════════════════════════════════╝
+
+  Download PostgreSQL: 
+  https://www.postgresql.org/download/windows/
+
+  Then run:
+  .\quick-start.ps1
+
+  You got this! 💪
+

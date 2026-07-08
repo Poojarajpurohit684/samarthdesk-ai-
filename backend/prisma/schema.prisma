@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  AGENT
+  ADMIN
+}
+
+enum TicketStatus {
+  OPEN
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketCategory {
+  BILLING
+  PAYMENT
+  TECHNICAL
+  BUG
+  FEATURE_REQUEST
+  DELIVERY
+  REFUND
+  AUTHENTICATION
+  ACCOUNT
+  OTHER
+}
+
+enum NotificationType {
+  TICKET_CREATED
+  TICKET_UPDATED
+  TICKET_ASSIGNED
+  NEW_MESSAGE
+  TICKET_RESOLVED
+  TICKET_CLOSED
+  MENTION
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+}
+
+enum AITone {
+  FRIENDLY
+  PROFESSIONAL
+  TECHNICAL
+  EMPATHETIC
+}
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  password          String
+  firstName         String
+  lastName          String
+  role              UserRole @default(CUSTOMER)
+  isEmailVerified   Boolean  @default(false)
+  emailVerificationToken String?
+  resetPasswordToken String?
+  resetPasswordExpires DateTime?
+  avatar            String?
+  phone             String?
+  isActive          Boolean  @default(true)
+  lastLoginAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  createdTickets    Ticket[]           @relation("TicketCreator")
+  assignedTickets   Ticket[]           @relation("TicketAssignee")
+  messages          TicketMessage[]
+  notifications     Notification[]
+  sessions          Session[]
+  auditLogs         AuditLog[]
+  
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  userAgent    String?
+  ipAddress    String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([refreshToken])
+  @@map("sessions")
+}
+
+model Ticket {
+  id          String         @id @default(uuid())
+  ticketNumber String        @unique
+  title       String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  category    TicketCategory @default(OTHER)
+  tags        String[]
+  aiSummary   String?
+  isAutoResolved Boolean     @default(false)
+  createdById String
+  assignedToId String?
+  resolvedAt  DateTime?
+  closedAt    DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  // Relations
+  createdBy   User             @relation("TicketCreator", fields: [createdById], references: [id])
+  assignedTo  User?            @relation("TicketAssignee", fields: [assignedToId], references: [id])
+  messages    TicketMessage[]
+  attachments Attachment[]
+  aiHistory   AIHistory[]
+  notifications Notification[]
+
+  @@index([ticketNumber])
+  @@index([createdById])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([priority])
+  @@index([category])
+  @@index([createdAt])
+  @@map("tickets")
+}
+
+model TicketMessage {
+  id        String   @id @default(uuid())
+  ticketId  String
+  userId    String
+  message   String
+  isInternal Boolean @default(false)
+  isAIGenerated Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  ticket      Ticket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id])
+  attachments Attachment[]
+
+  @@index([ticketId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("ticket_messages")
+}
+
+model Attachment {
+  id         String   @id @default(uuid())
+  filename   String
+  originalName String
+  mimeType   String
+  size       Int
+  path       String
+  ticketId   String?
+  messageId  String?
+  uploadedBy String
+  createdAt  DateTime @default(now())
+
+  // Relations
+  ticket  Ticket?        @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  message TicketMessage? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([messageId])
+  @@map("attachments")
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  ticketId  String?
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  metadata  Json?
+  createdAt DateTime         @default(now())
+
+  // Relations
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticket Ticket? @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([ticketId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model EmailLog {
+  id        String      @id @default(uuid())
+  to        String
+  from      String
+  subject   String
+  body      String
+  status    EmailStatus @default(PENDING)
+  error     String?
+  metadata  Json?
+  sentAt    DateTime?
+  createdAt DateTime    @default(now())
+
+  @@index([to])
+  @@index([status])
+  @@index([createdAt])
+  @@map("email_logs")
+}
+
+model AIHistory {
+  id          String   @id @default(uuid())
+  ticketId    String
+  action      String
+  input       String
+  output      String
+  model       String
+  tone        AITone?
+  tokens      Int?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("ai_history")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  action      String
+  entity      String
+  entityId    String
+  changes     Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity])
+  @@index([entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
