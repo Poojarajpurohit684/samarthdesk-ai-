@@ -406,11 +406,18 @@ npx prisma studio
 **Checked-in Railway config:**
 - `backend/railway.toml` runs Prisma migrations before boot
 - `frontend/railway.toml` serves the built app with `vite preview` on Railway's assigned port
+- Set `VITE_API_URL` and `VITE_WS_URL` in Railway because the frontend and backend run on different public domains
 
 ### Docker
 ```bash
-docker-compose -f docker-compose.prod.yml up -d
+copy .env.prod.example .env
+docker compose -f docker-compose.prod.yml up --build -d
 ```
+
+Docker production notes:
+- `backend/Dockerfile` runs `npm run start:migrate` so Prisma migrations apply on container start
+- `frontend` defaults to `/api/v1` and same-origin Socket.IO, matching the Nginx reverse proxy in `frontend/nginx.conf`
+- Update `CORS_ORIGIN`, `APP_URL`, and `FRONTEND_URL` in the copied `.env` file to your real public frontend URL
 
 ### Manual VPS
 - Node.js 18+

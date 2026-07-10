@@ -58,7 +58,7 @@ npm install && npx prisma generate && npm run build
 
 **Start Command:**
 ```bash
-npx prisma migrate deploy && npm start
+npm run start:migrate
 ```
 
 **Environment Variables:**
@@ -133,6 +133,7 @@ VITE_APP_NAME=Samarthdesk AI
 Use Docker when you want the frontend served by Nginx and the full stack orchestrated together.
 
 ```bash
+copy .env.prod.example .env
 docker compose -f docker-compose.prod.yml up --build -d
 ```
 
@@ -140,6 +141,12 @@ Production Docker files are already checked in:
 - `backend/Dockerfile`
 - `frontend/Dockerfile`
 - `docker-compose.prod.yml`
+
+Production Docker notes:
+- `backend/Dockerfile` starts with `npm run start:migrate`, so Prisma migrations run before the API boots.
+- `frontend` defaults to reverse-proxied `/api/v1` and same-origin Socket.IO, which matches `frontend/nginx.conf`.
+- Override `VITE_API_URL` and `VITE_WS_URL` only when the frontend is not sharing the same public origin as the API.
+- Fill in the copied `.env` file from `.env.prod.example` before running the stack.
 
 ### 7. Connect Services
 

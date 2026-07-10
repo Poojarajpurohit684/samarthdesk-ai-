@@ -45,6 +45,7 @@ npm run lint
 - Keep Docker, Railway, and local workflows aligned when changing ports, env vars, or startup commands.
 - Preserve the `/health` endpoint for production health checks.
 - When changing API URLs or sockets, update both `VITE_API_URL` and `VITE_WS_URL` guidance.
+- Keep the Docker frontend compatible with the checked-in Nginx reverse proxy defaults of `/api/v1` and `/socket.io`.
 - Validate production-sensitive changes with a local build before handoff when possible.
 
 ## Architecture Notes
@@ -61,9 +62,12 @@ npm run lint
 
 - Backend Railway deploy must run Prisma migrations before startup.
 - Frontend Railway deploy must use a runtime that exists in the build environment.
+- Backend Docker image must be able to run `npm run start:migrate` without installing extra packages at runtime.
+- Frontend Docker image should work with reverse-proxied relative paths by default and still allow Railway-specific `VITE_*` overrides.
 - Docker production should build immutable images and expose `backend:5000` and `frontend:80`.
 - `CORS_ORIGIN`, `APP_URL`, and `FRONTEND_URL` must match the deployed frontend domain.
 - `DATABASE_URL`, `JWT_SECRET`, and `JWT_REFRESH_SECRET` are required in production.
+- Use `.env.prod.example` as the source of truth for Docker Compose production variables.
 
 ## Definition Of Done
 
