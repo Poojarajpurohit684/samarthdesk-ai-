@@ -84,6 +84,16 @@ APP_URL=<your-frontend-url>
 FRONTEND_URL=<your-frontend-url>
 ```
 
+**Quick Railway Backend Checklist:**
+- `DATABASE_URL` linked from Railway PostgreSQL
+- `REDIS_URL` linked from Railway Redis if queues are enabled
+- `JWT_SECRET` set to a long random secret
+- `JWT_REFRESH_SECRET` set to a different long random secret
+- `CORS_ORIGIN`, `APP_URL`, and `FRONTEND_URL` all set to the exact deployed frontend URL
+- `OPENAI_API_KEY` only set if AI features are enabled in production
+- `SMTP_*` values set only if email flows are enabled and tested
+- `PORT` usually left to Railway unless you have a specific reason to override it
+
 ### 6. Deploy Frontend
 
 1. Click "New" → "GitHub Repo"
@@ -94,18 +104,15 @@ FRONTEND_URL=<your-frontend-url>
 
 **Build Command:**
 ```bash
-npm install && npm run build
+npm ci && npm run build
 ```
 
 **Start Command:**
 ```bash
-npm run preview
+npm run preview -- --host 0.0.0.0 --port $PORT
 ```
 
-Or use Nginx (recommended):
-
-**Dockerfile:**
-Already configured in `frontend/Dockerfile`
+This matches the checked-in `frontend/railway.toml` and works with Railway's Nixpacks runtime.
 
 **Environment Variables:**
 
@@ -114,6 +121,25 @@ VITE_API_URL=<your-backend-url>/api/v1
 VITE_WS_URL=<your-backend-url>
 VITE_APP_NAME=Samarthdesk AI
 ```
+
+**Quick Railway Frontend Checklist:**
+- `VITE_API_URL` points to the public backend URL plus `/api/v1`
+- `VITE_WS_URL` points to the public backend base URL without `/api/v1`
+- `VITE_APP_NAME` is optional branding only
+- Rebuild or redeploy the frontend after changing any `VITE_*` variable
+
+### 6a. Deploy With Docker Instead
+
+Use Docker when you want the frontend served by Nginx and the full stack orchestrated together.
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+Production Docker files are already checked in:
+- `backend/Dockerfile`
+- `frontend/Dockerfile`
+- `docker-compose.prod.yml`
 
 ### 7. Connect Services
 
@@ -379,6 +405,16 @@ Before deploying to production:
 - [ ] AI features tested
 - [ ] Performance tested
 - [ ] Security audit completed
+
+## Claude Code Workflow
+
+The repository now includes `CLAUDE.md` at the project root for consistent Claude Code behavior during implementation, review, and deployment tasks.
+
+Use it to keep changes aligned with:
+- local development commands
+- Docker and Railway deployment expectations
+- required production environment variables
+- the repo's definition of done
 
 ---
 

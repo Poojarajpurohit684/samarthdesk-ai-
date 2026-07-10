@@ -240,6 +240,7 @@ See **[CURRENT_STATUS.md](./CURRENT_STATUS.md)** for detailed breakdown.
 - **[TESTING.md](./TESTING.md)** - Testing strategies
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
 - **[GIT_COMMIT_GUIDE.md](./GIT_COMMIT_GUIDE.md)** - Git workflow
+- **[CLAUDE.md](./CLAUDE.md)** - Claude Code workflow and repo guardrails
 
 ### 🚀 Deployment
 - **[DEPLOYMENT_COMPLETE_GUIDE.md](./DEPLOYMENT_COMPLETE_GUIDE.md)** - Deploy to Railway/Docker/Vercel
@@ -401,6 +402,10 @@ npx prisma studio
 5. Deploy!
 
 **Detailed guide:** [DEPLOYMENT_COMPLETE_GUIDE.md](./DEPLOYMENT_COMPLETE_GUIDE.md)
+
+**Checked-in Railway config:**
+- `backend/railway.toml` runs Prisma migrations before boot
+- `frontend/railway.toml` serves the built app with `vite preview` on Railway's assigned port
 
 ### Docker
 ```bash
