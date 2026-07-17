@@ -1,11 +1,28 @@
 {
   "$schema": "https://railway.com",
-  "build": {
-    "builder": "NIXPACKS"
-  },
-  "deploy": {
-    "startCommand": "cd frontend && npm run build && vite preview --port $PORT --host 0.0.0.0",
-    "healthcheckPath": "/",
-    "restartPolicyType": "ON_FAILURE"
+  "services": {
+    "frontend-service": {
+      "source": {
+        "rootDirectory": "frontend"
+      },
+      "build": {
+        "builder": "NIXPACKS"
+      },
+      "deploy": {
+        "startCommand": "npm run build && vite preview --port $PORT --host 0.0.0.0",
+        "healthcheckPath": "/"
+      }
+    },
+    "backend-service": {
+      "source": {
+        "rootDirectory": "backend"
+      },
+      "build": {
+        "builder": "DOCKER"
+      },
+      "deploy": {
+        "healthcheckPath": null
+      }
+    }
   }
 }
