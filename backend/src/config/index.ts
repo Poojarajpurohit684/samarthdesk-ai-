@@ -36,24 +36,24 @@ export const config = {
   },
 
   ai: {
-    apiKey: process.env.OPENAI_API_KEY!,
+    apiKey: process.env.OPENAI_API_KEY || '',
     model: process.env.AI_MODEL || 'gpt-4-turbo-preview',
     maxTokens: parseInt(process.env.AI_MAX_TOKENS || '2000', 10),
   },
 
   email: {
     smtp: {
-      host: process.env.SMTP_HOST!,
+      host: process.env.SMTP_HOST || '',
       port: parseInt(process.env.SMTP_PORT || '587', 10),
-      user: process.env.SMTP_USER!,
-      password: process.env.SMTP_PASSWORD!,
+      user: process.env.SMTP_USER || '',
+      password: process.env.SMTP_PASSWORD || '',
       from: process.env.SMTP_FROM || 'noreply@samarthdesk.com',
     },
     imap: {
-      host: process.env.IMAP_HOST!,
+      host: process.env.IMAP_HOST || '',
       port: parseInt(process.env.IMAP_PORT || '993', 10),
-      user: process.env.IMAP_USER!,
-      password: process.env.IMAP_PASSWORD!,
+      user: process.env.IMAP_USER || '',
+      password: process.env.IMAP_PASSWORD || '',
     },
   },
 
