@@ -1,5 +1,7 @@
 FROM node:18-alpine AS builder
 
+RUN apk update && apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package*.json ./
