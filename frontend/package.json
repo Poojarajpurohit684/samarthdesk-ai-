@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
+    "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "start": "vite preview --port $PORT --host 0.0.0.0",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx",
     "test": "vitest",
