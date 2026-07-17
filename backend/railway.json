@@ -1,0 +1,10 @@
+{
+  "$schema": "https://railway.com",
+  "build": {
+    "builder": "DOCKER"
+  },
+  "deploy": {
+    "healthcheckPath": null,
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
