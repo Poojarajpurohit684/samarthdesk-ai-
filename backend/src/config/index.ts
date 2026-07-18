@@ -32,8 +32,9 @@ export const config = {
   },
 
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: 'https://samarthdesk-ai.vercel.app, http://localhost:5173'
   },
+
 
   ai: {
     apiKey: process.env.OPENAI_API_KEY!,
