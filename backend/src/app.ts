@@ -7,17 +7,13 @@ import { apiLimiter } from './middleware/rateLimiter';
 
 const app = express();
 
-const allowedOrigins = Array.from(
-  new Set([
-    ...(config.cors.origin
-      ? config.cors.origin.split(',').map((origin) => origin.trim())
-      : []),
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:5174',
-  ].filter(Boolean))
-);
+const allowedOrigins = [
+  'https://samarthdesk-ai.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174'
+];
 
 // Security middleware
 app.use(helmet());
