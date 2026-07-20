@@ -8,6 +8,7 @@ import { apiLimiter } from './middleware/rateLimiter';
 const app = express();
 
 const allowedOrigins = [
+  'https://samarthdesk-al-new-tawny.vercel.app',
   'https://samarthdesk-ai-poojarajpurohit684s-projects.vercel.app',
   'https://samarthdesk-ai-git-main-poojarajpurohit684s-projects.vercel.app', 
   'https://samarthdesk-3hdo8dja4-poojarajpurohit684s-projects.vercel.app',
