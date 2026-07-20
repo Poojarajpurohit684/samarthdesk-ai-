@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test</title>
+</head>
+<body>
+    <h1>Backend API Test</h1>
+    <div id="result"></div>
+    
+    <button onclick="testHealth()">Test Health</button>
+    <button onclick="testLogin()">Test Login</button>
+    
+    <script>
+        const API_URL = 'https://samarthdesk-ai-backend.railway.app';
+        
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.text();
+                document.getElementById('result').innerHTML = `<h3>Health Check:</h3><pre>${data}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<h3>Health Error:</h3><pre>${error.message}</pre>`;
+            }
+        }
+        
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'admin@samarthdesk.com',
+                        password: 'Admin@123'
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<h3>Login Test:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<h3>Login Error:</h3><pre>${error.message}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html>
