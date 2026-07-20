@@ -22,7 +22,7 @@ $loginData = @{
 
 $headers = @{
     "Content-Type" = "application/json"
-    "Origin" = "https://samarthdesk-ai-poojarajpurohit684s-projects.vercel.app"
+    "Origin" = "https://samarthdesk-al-new-tawny.vercel.app"
 }
 
 try {
