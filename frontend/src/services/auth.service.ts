@@ -57,16 +57,26 @@ class AuthService {
   }
 
   async logout(): Promise<void> {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (refreshToken) {
-      try {
-        await api.post('/auth/logout', { refreshToken });
-      } catch {
-        // Ignore logout errors — tokens will expire naturally
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      const accessToken = localStorage.getItem('accessToken');
+      
+      // Only call backend logout if we have tokens
+      if (refreshToken && accessToken) {
+        // Set authorization header for logout request
+        const authHeader = `Bearer ${accessToken}`;
+        await api.post('/auth/logout', 
+          { refreshToken }, 
+          { headers: { Authorization: authHeader } }
+        );
       }
+    } catch (error) {
+      // Ignore logout API errors — tokens will expire naturally
+      console.warn('Logout API failed, clearing tokens locally:', error);
+    } finally {
+      // Always clear tokens regardless of API success/failure
+      this.clearTokens();
     }
-
-    this.clearTokens();
   }
 
   async getMe(): Promise<User> {

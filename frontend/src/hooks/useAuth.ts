@@ -81,6 +81,13 @@ export const useAuth = () => {
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
+    onError: (error) => {
+      console.error('Logout mutation error:', error);
+      // Still clear local state even if API fails
+      logoutStore();
+      queryClient.clear();
+      navigate('/login');
+    }
   });
 
   React.useEffect(() => {
