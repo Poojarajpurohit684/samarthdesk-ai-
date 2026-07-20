@@ -1,18 +1,8 @@
 {
-  "framework": "vite",
-  "buildCommand": "cd frontend && npm ci && npm run build",
-  "installCommand": "cd frontend && npm ci",
-  "devCommand": "cd frontend && npm run dev",
-  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_API_URL": "https://samarthdesk-ai-backend.railway.app/api/v1",
-    "VITE_WS_URL": "https://samarthdesk-ai-backend.railway.app",
-    "VITE_APP_NAME": "Samarthdesk AI Demo"
-  }
+  ]
 }
