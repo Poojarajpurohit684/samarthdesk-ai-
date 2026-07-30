@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Definitive production target base path configuration
 const API_URL = 'https://railway.app';
 
 export const api = axios.create({
@@ -10,7 +9,6 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor to add authorization tokens safely
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -22,7 +20,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to manage token refresh cycles
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
