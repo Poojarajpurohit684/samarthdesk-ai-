@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = (import.meta.env.VITE_API_URL || '/api/v1').replace(/\/+$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || 'https://railway.app').replace(/\/+$/, '');
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -12,6 +12,11 @@ export const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
+    // Force absolute paths to Railway backend if the request target starts with /
+    if (config.url && config.url.startsWith('/')) {
+      config.baseURL = 'https://railway.app';
+    }
+
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
