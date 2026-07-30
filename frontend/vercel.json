@@ -1,12 +1,10 @@
 {
-  "framework": "vite",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://railway.app"
     }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
