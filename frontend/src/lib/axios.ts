@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// FIX 1: Updated the primary API_URL fallback parameter
-const API_URL = (import.meta.env.VITE_API_URL || 'https://railway.app').replace(/\/+$/, '');
+// Definitive production target base path configuration
+const API_URL = 'https://railway.app';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -10,14 +10,9 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add authorization tokens safely
 api.interceptors.request.use(
   (config) => {
-    // Force absolute paths to Railway backend if the request target starts with /
-    if (config.url && config.url.startsWith('/')) {
-      // FIX 2: Updated the config override line to force your real address
-      config.baseURL = 'https://railway.app';
-    }
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,7 +22,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle token refresh
+// Response interceptor to manage token refresh cycles
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
