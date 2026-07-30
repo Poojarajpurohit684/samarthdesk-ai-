@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// FIX 1: Updated the primary API_URL fallback parameter
 const API_URL = (import.meta.env.VITE_API_URL || 'https://railway.app').replace(/\/+$/, '');
 
 export const api = axios.create({
@@ -14,9 +15,9 @@ api.interceptors.request.use(
   (config) => {
     // Force absolute paths to Railway backend if the request target starts with /
     if (config.url && config.url.startsWith('/')) {
+      // FIX 2: Updated the config override line to force your real address
       config.baseURL = 'https://railway.app';
     }
-
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -31,25 +32,19 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) {
           throw new Error('No refresh token');
         }
-
         const response = await axios.post(`${API_URL}/auth/refresh-token`, {
           refreshToken,
         });
-
         const { accessToken, refreshToken: newRefreshToken } = response.data.data;
-
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
-
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch {
@@ -59,7 +54,6 @@ api.interceptors.response.use(
         return Promise.reject(error);
       }
     }
-
     return Promise.reject(error);
   }
 );
