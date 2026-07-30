@@ -48,7 +48,7 @@ export const ForgotPassword = () => {
                 />
               </svg>
             </div>
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Check your email</h2>
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Check your inbox</h2>
             <p className="mt-2 text-sm text-gray-600">
               We've sent a password reset link to your email address.
             </p>
