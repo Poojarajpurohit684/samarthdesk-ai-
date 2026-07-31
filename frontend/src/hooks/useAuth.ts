@@ -68,11 +68,17 @@ export const useAuth = () => {
 
   React.useEffect(() => {
     if (registerMutation.isSuccess && registerMutation.data) {
-      setUser(registerMutation.data.user);
-      queryClient.setQueryData(['me'], registerMutation.data.user);
-      toast.success('Registration successful!');
-      navigate('/dashboard');
-    } else if (registerMutation.isError) {
+    setUser(registerMutation.data.user);
+
+    queryClient.setQueryData(['me'], registerMutation.data.user);
+
+    import('../lib/socket').then(({ connectSocket }) => {
+        connectSocket(registerMutation.data.accessToken);
+    });
+
+    toast.success('Registration successful!');
+    navigate('/dashboard');
+} else if (registerMutation.isError) {
       const error: any = registerMutation.error;
       toast.error(error.response?.data?.message || 'Registration failed');
     }
@@ -80,7 +86,7 @@ export const useAuth = () => {
 
   // Logout mutation
   const logoutMutation = useMutation({
-    mutationFn: authService.logout,
+  mutationFn: () => authService.logout(),
     onError: (error) => {
       console.error('Logout mutation error:', error);
       // Still clear local state even if API fails

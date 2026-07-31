@@ -74,9 +74,8 @@ class AuthService {
       // Ignore logout API errors — tokens will expire naturally
       console.warn('Logout API failed, clearing tokens locally:', error);
     } finally {
-      // Always clear tokens regardless of API success/failure
-      this.clearTokens();
-    }
+  authService.clearTokens();
+}
   }
 
   async getMe(): Promise<User> {
