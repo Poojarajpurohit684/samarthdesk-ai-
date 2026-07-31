@@ -7,6 +7,13 @@ import { apiLimiter } from './middleware/rateLimiter';
 
 const app = express();
 
+app.set('trust proxy', 1);
+
+// Security middleware
+app.use(helmet());
+
+app.use(cors(...));
+
 const allowedOrigins = [
   'https://frontend-km6jkzu6c-poojarajpurohit684s-projects.vercel.app',
   'https://samarthdesk-al-new-tawny.vercel.app',
