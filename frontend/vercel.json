@@ -1,7 +1,7 @@
 {
   "build": {
     "env": {
-      "VITE_API_URL": "https://railway.app"
+      "VITE_API_URL": "https://backend-service-production-fde3.up.railway.app/api/v1"
     }
   },
   "rewrites": [
